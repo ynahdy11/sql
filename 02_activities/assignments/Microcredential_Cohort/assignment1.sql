@@ -158,7 +158,16 @@ of customers for them to give stickers to, sorted by last name, then first name.
 HINT: This query requires you to join two tables, use an aggregate function, and use the HAVING keyword. */
 --QUERY 9
 
+SELECT DISTINCT c.customer_id,
+c.customer_last_name,
+c.customer_first_name,
+SUM(quantity*cost_per_quantity)as total_spend
+		FROM customer as c
+		LEFT JOIN customer_purchases as cp
+		ON c.customer_id=cp.customer_id
 
+GROUP BY customer_last_name,customer_first_name
+HAVING total_spend > 2000;
 
 
 --END QUERY
