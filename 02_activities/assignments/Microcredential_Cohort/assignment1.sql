@@ -92,6 +92,22 @@ add a column to the previous query called pepper_flag that outputs a 1 if the pr
 contains the word “pepper” (regardless of capitalization), and otherwise outputs 0. */
 --QUERY 6
 
+SELECT 
+product_id,
+product_name,
+CASE 
+	WHEN product_qty_type = 'unit'
+	 THEN 'unit'
+	 ELSE 'bulk'
+	 End as prod_qty_type,
+	 
+CASE 
+	WHEN product_name like '%Pepper%'
+	THEN '1'
+	ELSE '0'
+	END as pepper_flag
+	
+FROM product
 
 
 
@@ -104,8 +120,17 @@ vendor_id field they both have in common, and sorts the result by market_date, t
 Limit to 24 rows of output. */
 --QUERY 7
 
+SELECT 
+v.vendor_id
+,v.vendor_name
+,vb.market_date
 
+FROM vendor as v
+	INNER JOIN vendor_booth_assignments as vb
+	on vb.vendor_id = v.vendor_id
 
+ORDER by market_date,vendor_name
+LIMIT 24;
 
 --END QUERY
 
@@ -118,8 +143,10 @@ Limit to 24 rows of output. */
 at the farmer’s market by counting the vendor booth assignments per vendor_id. */
 --QUERY 8
 
-
-
+SELECT vendor_id,
+		count(vendor_id) as number_of_vendor_assignments 
+FROM vendor_booth_assignments
+GROUP BY vendor_id
 
 --END QUERY
 
