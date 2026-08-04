@@ -7,6 +7,8 @@
 /* 1. Write a query that returns everything in the customer table. */
 --QUERY 1
 
+SELECT*
+FROM customer;
 
 
 
@@ -17,6 +19,10 @@
 sorted by customer_last_name, then customer_first_ name. */
 --QUERY 2
 
+SELECT*
+FROM customer
+ORDER by customer_last_name, customer_first_name
+LIMIT 10;
 
 
 
@@ -26,25 +32,35 @@ sorted by customer_last_name, then customer_first_ name. */
 --WHERE
 /* 1. Write a query that returns all customer purchases of product IDs 4 and 9. 
 Limit to 25 rows of output. */
---QUERY 3
+--QUERY 3c
+
+SELECT product_id
+FROM customer_purchases
+WHERE product_id = 4
+OR product_id = 9
+LIMIT 25;
 
 
 
 
 --END QUERY
 
-
-
 /*2. Write a query that returns all customer purchases and a new calculated column 'price' (quantity * cost_to_customer_per_qty), 
 filtered by customer IDs between 8 and 10 (inclusive) using either:
 	1.  two conditions using AND
 	2.  one condition using BETWEEN
 Limit to 25 rows of output.
-*/
 --QUERY 4
 
-
-
+SELECT *
+,CASE 
+	WHEN (customer_id BETWEEN 8 and 10)
+	 THEN customer_id
+	 ELSE NULL
+	 End as filtered_customer_id
+FROM customer_purchases
+LIMIT 25;
+SELECT
 
 --END QUERY
 
@@ -56,6 +72,15 @@ columns and add a column called prod_qty_type_condensed that displays the word �
 if the product_qty_type is “unit,” and otherwise displays the word “bulk.” */
 --QUERY 5
 
+SELECT 
+product_id,
+product_name,
+CASE 
+	WHEN product_qty_type = 'unit'
+	 THEN 'unit'
+	 ELSE 'bulk'
+	 End as prod_qty_type
+FROM product
 
 
 
