@@ -22,9 +22,9 @@ The `||` values concatenate the columns into strings.
 Edit the appropriate columns -- you're making two edits -- and the NULL rows will be fixed. 
 All the other rows will remain the same. */
 --QUERY 1
-
-
-
+SELECT
+product_name || ', ' || coalesce(product_size, '') || '(' || coalesce(product_qty_type, 'unit') || ')'
+FROM product
 
 --END QUERY
 
@@ -41,7 +41,13 @@ HINT: One of these approaches uses ROW_NUMBER() and one uses DENSE_RANK().
 Filter the visits to dates before April 29, 2022. */
 --QUERY 2
 
-
+SELECT *
+,DENSE_RANK() 
+	OVER(PARTITION BY customer_id
+    ORDER BY market_date) AS visit_number
+FROM customer_purchases
+WHERE market_date < '2022-04-29'
+ORDER BY customer_id, market_date
 
 
 --END QUERY
